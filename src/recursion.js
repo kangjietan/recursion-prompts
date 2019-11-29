@@ -7,31 +7,100 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
+    if (n < 0) {
+        return null;
+    } else if (n === 0) {
+        return 1;
+    }
+
+    return (n * factorial(n-1));
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+    if (array.length === 0) {
+        return 0;
+    } else if (array.length === 1) {
+        return array[0];
+    }
+
+    return array[0] + sum(array.slice(1));
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
+    if(array.length === 0) {
+        return 0;
+    } else if (array.length === 1 && typeof array[0] === "number") {
+        return array[0];
+    } else if (array.length === 1 && Array.isArray(array[0])) {
+        return array[0][0] + arraySum(array[0].slice(1));
+    }
+
+    if (typeof array[0] === "number") {
+        return array[0] + arraySum(array.slice(1));
+    } else if (Array.isArray(array[0])) {
+        return arraySum(array[0]) + arraySum(array.slice(1));
+    }
 };
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+    n = Math.abs(n);
+    if (n === 0) {
+        return true;
+    } else if (n === 1) {
+        return false;
+    }
+
+    return isEven(n-2);
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
+    if(n === 0) {
+        return 0;
+    }
+
+    if(n < 0) {
+        return n+1 + sumBelow(n+1);
+    } else if (n > 0) {
+        return n-1 + sumBelow(n-1);
+    }
+
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
+    var result = [];
+    if (x-y === 0 || x-y === 1) {
+        return result;
+    }
+    
+    if (x > 0 && y > 0) {
+        if(x-y === 0 || Math.abs(x-y) === 1) {
+            return result;
+        }
+    } else if (x < 0 && y < 0) {
+        if (Math.abs(x) - Math.abs(y) === 0 || Math.abs(x) - Math.abs(y) === 1) {
+            return result;
+        }
+    }
+
+    if (x > y) {
+        result.unshift(x-1);
+        return result.concat(range(x-1, y));
+    }
+
+    if (x < y) {
+        result.unshift(x+1);
+        return result.concat(range(x+1, y));
+    }
 };
 
 // 7. Compute the exponent of a number.
